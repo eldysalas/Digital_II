@@ -1,0 +1,1197 @@
+<!DOCTYPE html><html lang="es"><head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Prevención de Caídas Hospitalarias: Solución de Domótica Inteligente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#64748b',
+                        accent: '#f59e0b',
+                        neutral: '#374151',
+                        'base-100': '#ffffff',
+                        'base-200': '#f8fafc',
+                        'base-300': '#e2e8f0',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(100, 116, 139, 0.1) 100%);
+        }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 1.5rem;
+            height: 70vh;
+        }
+        
+        .bento-main {
+            grid-row: 1 / -1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bento-side-1 {
+            background: rgba(30, 64, 175, 0.05);
+            border-left: 4px solid #1e40af;
+        }
+        
+        .bento-side-2 {
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .toc-fixed {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            width: 280px;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-content {
+            margin-left: 320px;
+            padding: 2rem;
+        }
+        
+        .citation-link {
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #1e40af;
+        }
+        
+        .citation-link:hover {
+            background: rgba(30, 64, 175, 0.1);
+            border-bottom: 1px solid #1e40af;
+        }
+        
+        .stat-highlight {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .insight-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .quote-block {
+            font-style: italic;
+            font-size: 1.125rem;
+            color: #374151;
+            border-left: 4px solid #1e40af;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        @media (max-width: 1024px) {
+            .toc-fixed {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                height: auto;
+            }
+            .bento-main {
+                grid-row: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                height: auto;
+            }
+            .bento-main {
+                grid-row: auto;
+            }
+        }
+
+        .mermaid-container {
+            display: flex;
+            justify-content: center;
+            min-height: 300px;
+            max-height: 800px;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mermaid-container .mermaid {
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            cursor: grab;
+            transition: transform 0.3s ease;
+            transform-origin: center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .mermaid-container .mermaid svg {
+            max-width: 100%;
+            height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .mermaid-container .mermaid:active {
+            cursor: grabbing;
+        }
+
+        .mermaid-container.zoomed .mermaid {
+            height: 100%;
+            width: 100%;
+            cursor: grab;
+        }
+
+        .mermaid-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .mermaid-control-btn {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #374151;
+            font-size: 14px;
+            min-width: 36px;
+            height: 36px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mermaid-control-btn:hover {
+            background: #f8fafc;
+            border-color: #3b82f6;
+            color: #3b82f6;
+            transform: translateY(-1px);
+        }
+
+        .mermaid-control-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 1024px) {
+            .mermaid-control-btn:not(.reset-zoom) {
+                display: none;
+            }
+            .mermaid-controls {
+                top: auto;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+  <base target="_blank">
+</head>
+
+  <body class="bg-base-100 font-sans text-neutral">
+    <!-- Fixed Table of Contents -->
+    <nav class="toc-fixed">
+      <h3 class="font-serif text-lg font-bold mb-4 text-primary">Índice</h3>
+      <ul class="space-y-2 text-sm">
+        <li>
+          <a href="#executive-summary" class="citation-link">Resumen Ejecutivo</a>
+        </li>
+        <li>
+          <a href="#problem-scope" class="citation-link">1. El Problema: Crisis de Seguridad</a>
+        </li>
+        <li class="ml-4">
+          <a href="#falls-statistics" class="citation-link">1.1 Magnitud de Caídas</a>
+        </li>
+        <li class="ml-4">
+          <a href="#bed-falls" class="citation-link">1.2 Caídas de Cama</a>
+        </li>
+        <li class="ml-4">
+          <a href="#impact-costs" class="citation-link">1.3 Impacto y Costos</a>
+        </li>
+        <li>
+          <a href="#our-solution" class="citation-link">2. Nuestra Solución</a>
+        </li>
+        <li class="ml-4">
+          <a href="#core-functionality" class="citation-link">2.1 Detección Inteligente</a>
+        </li>
+        <li class="ml-4">
+          <a href="#continuous-monitoring" class="citation-link">2.2 Monitoreo Continuo</a>
+        </li>
+        <li class="ml-4">
+          <a href="#patient-safety" class="citation-link">2.3 Seguridad del Paciente</a>
+        </li>
+        <li>
+          <a href="#key-benefits" class="citation-link">3. Beneficios Clave</a>
+        </li>
+        <li class="ml-4">
+          <a href="#clinical-benefits" class="citation-link">3.1 Beneficios Clínicos</a>
+        </li>
+        <li class="ml-4">
+          <a href="#economic-benefits" class="citation-link">3.2 Beneficios Económicos</a>
+        </li>
+        <li class="ml-4">
+          <a href="#usability-scalability" class="citation-link">3.3 Usabilidad y Escalabilidad</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Hero Section with Bento Grid -->
+      <section class="mb-16">
+        <div class="bento-grid">
+          <!-- Main Hero Content -->
+          <div class="bento-main hero-gradient rounded-2xl p-8 flex flex-col justify-center relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+              <img src="https://fixedplaceholder" alt="Habitación de hospital con tecnología moderna y sensores" class="w-full h-full object-cover" size="wallpaper" aspect="wide" style="photo" query="habitación hospital inteligente" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+            </div>
+            <div class="relative z-10">
+              <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
+                <em>Prevención de Caídas</em>
+                <br/>
+                <span class="text-neutral">en Hospitales Colombianos</span>
+              </h1>
+              <p class="text-xl text-secondary mb-8 max-w-2xl">
+                Una solución integral de domótica hospitalaria que combate la crisis de seguridad del paciente con tecnología inteligente y monitoreo continuo.
+              </p>
+              <div class="flex flex-wrap gap-4">
+                <div class="stat-highlight">
+                  <div class="text-2xl font-bold">26%</div>
+                  <div class="text-sm opacity-90">Caídas desde la cama</div>
+                </div>
+                <div class="stat-highlight">
+                  <div class="text-2xl font-bold">40%</div>
+                  <div class="text-sm opacity-90">Con lesiones resultantes</div>
+                </div>
+                <div class="stat-highlight">
+                  <div class="text-2xl font-bold">$100k+</div>
+                  <div class="text-sm opacity-90">Costo por evento</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side Panel 1 -->
+          <div class="bento-side-1 rounded-2xl p-6 flex flex-col justify-center">
+            <h3 class="font-serif text-xl font-bold text-primary mb-4">El Problema</h3>
+            <p class="text-secondary mb-4">
+              Las caídas intrahospitalarias afectan a <strong>1 de cada 4 pacientes</strong> mayores en Colombia, con consecuencias devastadoras.
+            </p>
+            <div class="text-sm text-secondary">
+              <i class="fas fa-exclamation-triangle text-accent mr-2"></i>
+              El 26% ocurre directamente desde la cama
+            </div>
+          </div>
+
+          <!-- Side Panel 2 -->
+          <div class="bento-side-2 rounded-2xl p-6 flex flex-col justify-center">
+            <h3 class="font-serif text-xl font-bold text-accent mb-4">Nuestra Solución</h3>
+            <p class="text-secondary mb-4">
+              Sistema de detección inmediata con sensores de peso, alertas Telegram y monitoreo web 24/7.
+            </p>
+            <div class="text-sm text-secondary">
+              <i class="fas fa-shield-alt text-primary mr-2"></i>
+              Respuesta en segundos, no minutos
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Executive Summary -->
+      <section id="executive-summary" class="mb-16">
+        <div class="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8">
+          <h2 class="font-serif text-3xl font-bold text-primary mb-6">Resumen Ejecutivo</h2>
+          <div class="prose prose-lg max-w-none">
+            <p class="text-lg text-secondary leading-relaxed mb-6">
+              Las caídas de cama en hospitales son un problema crítico de seguridad del paciente en Colombia, donde estudios recientes indican que <strong>el 26% de las caídas intrahospitalarias ocurren directamente desde la cama</strong>. Este problema afecta principalmente a pacientes de la tercera edad, con una incidencia <strong>tres veces mayor</strong> a la observada en la comunidad.
+            </p>
+            <div class="grid md:grid-cols-3 gap-6 my-8">
+              <div class="stat-highlight">
+                <div class="text-3xl font-bold mb-2">40.6%</div>
+                <div class="text-sm opacity-90">Caídas resultan en trauma</div>
+              </div>
+              <div class="stat-highlight">
+                <div class="text-3xl font-bold mb-2">77.5 años</div>
+                <div class="text-sm opacity-90">Edad promedio de afectados</div>
+              </div>
+              <div class="stat-highlight">
+                <div class="text-3xl font-bold mb-2">$100k+</div>
+                <div class="text-sm opacity-90">Costo por evento adverso</div>
+              </div>
+            </div>
+            <p class="text-lg text-secondary leading-relaxed">
+              Nuestro sistema de domótica hospitalaria, con su sensor de peso para detección inmediata, alertas instantáneas y monitoreo continuo, aborda directamente esta crisis, ofreciendo una solución tecnológica y escalable para mejorar la seguridad del paciente y reducir los costos operacionales en hospitales generales, UCI y habitaciones de aislamiento.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Problem Scope -->
+      <section id="problem-scope" class="mb-16">
+        <h2 class="font-serif text-4xl font-bold text-primary mb-8">1. El Problema: Una Crisis de Seguridad del Paciente</h2>
+
+        <!-- Falls Statistics -->
+        <div id="falls-statistics" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">1.1 La Magnitud del Problema de las Caídas en Hospitales</h3>
+
+          <div class="insight-box">
+            <p class="font-medium">
+              <i class="fas fa-chart-line text-accent mr-2"></i>
+              La Organización Mundial de la Salud (OMS) estima que aproximadamente <strong>37 millones de caídas requieren atención médica cada año</strong>, posicionándolas como la segunda causa principal de muertes por lesiones no intencionales a nivel global.
+              <a href="https://www.mdpi.com/1648-9144/61/11/1926" class="citation-link ml-2" target="_blank">[253]</a>
+            </p>
+          </div>
+
+          <h4 class="font-serif text-xl font-semibold text-neutral mb-4">1.1.1 Estadísticas Generales de Caídas en Colombia</h4>
+
+          <p class="text-secondary mb-4 leading-relaxed">
+            Un estudio multicéntrico realizado en cuatro clínicas de alta complejidad en Colombia entre 2018 y 2020, que analizó <strong>249 pacientes mayores de 64 años</strong> que sufrieron una caída durante su estancia hospitalaria, proporciona una visión detallada de la magnitud del problema.
+            <a href="https://www.elsevier.es/es-revista-enfermeria-clinica-english-edition--435-articulo-falls-in-older-adults-hospitalized-S244514792400064X" class="citation-link ml-2" target="_blank">[351]</a>
+          </p>
+
+          <div class="bg-base-200 rounded-xl p-6 mb-6">
+            <h5 class="font-semibold text-neutral mb-4">Distribución de caídas por área hospitalaria:</h5>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span>Salas de hospitalización</span>
+                <span class="font-bold text-primary">77.1%</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span>Departamentos de emergencias</span>
+                <span class="font-bold text-primary">20.9%</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span>Otras áreas</span>
+                <span class="font-bold text-primary">2.0%</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-secondary mb-6 leading-relaxed">
+            Otro estudio retrospectivo realizado en un hospital de alta complejidad en Bogotá entre 2013 y 2016 identificó un total de <strong>951 caídas</strong> durante el período de estudio, de las cuales el <strong>63.1% fueron clasificadas como eventos adversos</strong>.
+            <a href="http://www.scielo.org.co/scielo.php?script=sci_arttext&amp;pid=S1692-72732021000300004" class="citation-link ml-2" target="_blank">[375]</a>
+          </p>
+
+          <h4 class="font-serif text-xl font-semibold text-neutral mb-4">1.1.2 Alta Incidencia en Pacientes de la Tercera Edad</h4>
+
+          <div class="quote-block">
+            &#34;La edad promedio de los pacientes que sufrieron caídas fue de 77.5 años, con una predominancia del sexo masculino (63.9%)&#34;
+          </div>
+
+          <p class="text-secondary mb-4 leading-relaxed">
+            El estudio multicéntrico reveló que el <strong>92% de los pacientes que sufrieron una caída tenían polifarmacia</strong> (cinco o más medicamentos), y el <strong>88% recibían psicofármacos</strong>.
+            <a href="https://www.elsevier.es/es-revista-enfermeria-clinica-english-edition--435-articulo-falls-in-older-adults-hospitalized-S244514792400064X" class="citation-link ml-2" target="_blank">[351]</a>
+          </p>
+
+          <h4 class="font-serif text-xl font-semibold text-neutral mb-4">1.1.3 Comparación con la Tasa de Caídas en la Comunidad</h4>
+
+          <p class="text-secondary mb-6 leading-relaxed">
+            Un estudio publicado en la revista <em>Enfermería Clínica</em> señala que <strong>la incidencia de caídas en pacientes ancianos en el entorno hospitalario es tres veces mayor que la que se da en la comunidad</strong>.
+            <a href="https://www.elsevier.es/es-revista-enfermeria-clinica-english-edition--435-articulo-falls-in-older-adults-hospitalized-S244514792400064X" class="citation-link ml-2" target="_blank">[351]</a>
+          </p>
+        </div>
+
+        <!-- Bed Falls -->
+        <div id="bed-falls" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">1.2 Las Caídas de Cama: Un Riesgo Específico y Subestimado</h3>
+
+          <div class="insight-box">
+            <p class="font-medium">
+              <i class="fas fa-bed text-accent mr-2"></i>
+              Un estudio publicado en 2023 y realizado en un hospital de alta complejidad en Bogotá encontró que <strong>el 26.0% de las caídas ocurrieron desde la cama</strong>.
+              <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10703912/" class="citation-link ml-2" target="_blank">[369]</a>
+            </p>
+          </div>
+
+          <h4 class="font-serif text-xl font-semibold text-neutral mb-4">1.2.1 Circunstancias Comunes de las Caídas</h4>
+
+          <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-base-200 rounded-xl p-6">
+              <h5 class="font-semibold text-neutral mb-3">Momentos críticos:</h5>
+              <ul class="space-y-2 text-secondary">
+                <li><i class="fas fa-walking text-primary mr-2"></i>Levantarse para ir al baño: 28.9%</li>
+                <li><i class="fas fa-user text-primary mr-2"></i>Ponerse de pie sin ayuda: 34.4%</li>
+              </ul>
+            </div>
+            <div class="bg-base-200 rounded-xl p-6">
+              <h5 class="font-semibold text-neutral mb-3">Turno de mayor riesgo:</h5>
+              <div class="text-center">
+                <div class="text-3xl font-bold text-accent mb-2">44.4%</div>
+                <div class="text-secondary">Turno nocturno</div>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-secondary mb-6 leading-relaxed">
+            <a href="https://www.elsevier.es/es-revista-enfermeria-clinica-english-edition--435-articulo-falls-in-older-adults-hospitalized-S244514792400064X" class="citation-link" target="_blank">[351]</a>
+          </p>
+
+          <h4 class="font-serif text-xl font-semibold text-neutral mb-4">1.2.2 Limitaciones de los Sistemas de Prevención Actuales</h4>
+
+          <p class="text-secondary mb-6 leading-relaxed">
+            A pesar de los esfuerzos por implementar estrategias de prevención, los sistemas actuales presentan limitaciones críticas. El turno de la noche se asoció con un mayor riesgo de caídas que culminaban en un evento adverso, lo que sugiere que la falta de personal o la fatiga del personal durante este turno puede ser un factor contribuyente.
+            <a href="http://www.scielo.org.co/scielo.php?script=sci_arttext&amp;pid=S1692-72732021000300004" class="citation-link ml-2" target="_blank">[375]</a>
+          </p>
+        </div>
+
+        <!-- Impact and Costs -->
+        <div id="impact-costs" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">1.3 El Impacto en la Seguridad del Paciente y los Costos Hospitalarios</h3>
+
+          <h4 class="font-serif text-xl font-semibold text-neutral mb-4">1.3.1 Tasas de Lesiones por Caídas</h4>
+
+          <div class="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-400 p-6 rounded-r-xl mb-6">
+            <div class="grid md:grid-cols-3 gap-4">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">40.6%</div>
+                <div class="text-sm text-red-700">Trauma resultante</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">27.7%</div>
+                <div class="text-sm text-red-700">Lesiones en cabeza</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">3.2%</div>
+                <div class="text-sm text-red-700">Fracturas</div>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-secondary mb-6 leading-relaxed">
+            El estudio multicéntrico encontró que más de la mitad de los pacientes que sufrieron un trauma requirieron atención médica adicional, como radiografías del lugar del trauma.
+            <a href="https://www.elsevier.es/es-revista-enfermeria-clinica-english-edition--435-articulo-falls-in-older-adults-hospitalized-S244514792400064X" class="citation-link ml-2" target="_blank">[351]</a>
+          </p>
+
+          <h4 class="font-serif text-xl font-semibold text-neutral mb-4">1.3.2 El Problema Más Amplio: Eventos Adversos</h4>
+
+          <div class="insight-box">
+            <p class="font-medium">
+              <i class="fas fa-exclamation-circle text-accent mr-2"></i>
+              El Ministerio de Salud y Protección Social de Colombia estima que aproximadamente <strong>el 70% de los 9 millones de pacientes hospitalizados anualmente sufren al menos un accidente relacionado con la seguridad del paciente</strong>.
+              <a href="https://globalhealthintelligence.com/news/colombia-accidents-hospitals-harm-70-patients/" class="citation-link ml-2" target="_blank">[272]</a>
+            </p>
+          </div>
+
+          <p class="text-secondary mb-6 leading-relaxed">
+            Una investigación publicada en 2025 informó que la incidencia de eventos adversos en las UCI de un hospital de alta complejidad en Colombia fue de un <strong>alarmante 52.1%</strong>.
+            <a href="https://bmjpublichealth.bmj.com/content/2/2/e001243" class="citation-link ml-2" target="_blank">[287]</a>
+          </p>
+
+          <h4 class="font-serif text-xl font-semibold text-neutral mb-4">1.3.3 Costos Asociados</h4>
+
+          <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-400 p-6 rounded-r-xl mb-6">
+            <p class="text-lg font-medium text-green-800 mb-2">
+              <i class="fas fa-dollar-sign mr-2"></i>
+              Costo adicional por evento adverso
+            </p>
+            <div class="text-3xl font-bold text-green-700 mb-1">
+              US$16,687 - US$110,516
+            </div>
+            <p class="text-sm text-green-600">
+              Basado en datos de 2010, los costos actuales son aún mayores
+              <a href="https://bmjpublichealth.bmj.com/content/2/2/e001243" class="citation-link ml-2" target="_blank">[287]</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Our Solution -->
+      <section id="our-solution" class="mb-16">
+        <h2 class="font-serif text-4xl font-bold text-primary mb-8">2. Nuestra Solución: Un Sistema de Domótica Hospitalaria Integral</h2>
+
+        <!-- Core Functionality -->
+        <div id="core-functionality" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">2.1 Funcionalidad Principal: Detección Inteligente de Caídas de Cama</h3>
+
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <img src="https://kimi-web-img.moonshot.cn/img/www.taiwan-healthcare.org/fe5c49d6d76f34e25a4b9a27e315fb9fe9737d9a.png" alt="Sensor de peso para detección de caídas en cama hospitalaria" class="w-full h-64 object-cover rounded-xl shadow-lg mb-4" size="medium" aspect="wide" style="photo" query="hospital bed weight sensor" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+              <h4 class="font-serif text-xl font-semibold text-neutral mb-3">2.1.1 Sensor de Peso de Alta Precisión</h4>
+              <p class="text-secondary leading-relaxed">
+                Nuestro sensor de peso de alta precisión está diseñado para la detección inmediata e inteligente de caídas de cama, ofreciendo detección directa y confiable con mínimas falsas alarmas.
+                <a href="https://www.mdpi.com/1648-9144/61/11/1926" class="citation-link ml-2" target="_blank">[253]</a>
+              </p>
+            </div>
+            <div>
+              <img src="https://kimi-web-img.moonshot.cn/img/placeholder-0620/%E5%9B%BE%E7%89%8721.png" alt="Enfermera recibiendo alerta de caída de paciente en smartphone" class="w-full h-64 object-cover rounded-xl shadow-lg mb-4" size="medium" aspect="wide" style="photo" query="enfermera smartphone alerta paciente" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+              <h4 class="font-serif text-xl font-semibold text-neutral mb-3">2.1.2 Alertas Instantáneas vía Telegram</h4>
+              <p class="text-secondary leading-relaxed">
+                Integración con Telegram para enviar alertas directas e inmediatas al personal médico, incluyendo información de habitación, tipo de evento y hora exacta.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-base-200 rounded-xl p-6 mb-6">
+            <h4 class="font-serif text-xl font-semibold text-neutral mb-4">2.1.3 Monitoreo en Tiempo Real vía Plataforma Web</h4>
+            <p class="text-secondary mb-4 leading-relaxed">
+              Plataforma web centralizada que permite visualizar el estado de todos los sensores, acceder a datos históricos, identificar patrones de riesgo y generar reportes para la administración hospitalaria.
+            </p>
+          </div>
+        </div>
+
+        <!-- Continuous Monitoring -->
+        <div id="continuous-monitoring" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">2.2 Monitoreo Continuo y Control del Entorno para UCI y Aislamiento</h3>
+
+          <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6">
+              <h4 class="font-serif text-lg font-semibold text-primary mb-3">2.2.1 Control Automático de Temperatura y Humedad</h4>
+              <p class="text-secondary text-sm leading-relaxed">
+                Sensores integrados que trabajan con aire acondicionado y calefactores para mantener condiciones óptimas. Se proyecta un aumento del <strong>42% en la adquisición de sistemas de monitoreo</strong> en Colombia para 2022.
+                <a href="https://globalhealthintelligence.com/ghi-analysis/the-top-growth-categories-in-medical-equipment-in-colombia-for-2022/" class="citation-link ml-1" target="_blank">[240]</a>
+              </p>
+            </div>
+            <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-6">
+              <h4 class="font-serif text-lg font-semibold text-accent mb-3">2.2.2 Control Inteligente de Iluminación</h4>
+              <p class="text-secondary text-sm leading-relaxed">
+                Sensor de luminosidad que detecta condiciones ambientales para controlar la iluminación, apoyando el ciclo circadiano del paciente con luz tenue nocturna y simulación de luz natural diurna.
+              </p>
+            </div>
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6">
+              <h4 class="font-serif text-lg font-semibold text-green-600 mb-3">2.2.3 Control de Acceso con Sensor de Proximidad</h4>
+              <p class="text-secondary text-sm leading-relaxed">
+                Sensor de proximidad para control automatizado de puertas, permitiendo entrada sin contacto en habitaciones de aislamiento y reduciendo riesgo de contaminación cruzada.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Patient Safety -->
+        <div id="patient-safety" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">2.3 Seguridad y Comodidad del Paciente</h3>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 class="font-serif text-xl font-semibold text-neutral mb-3">2.3.1 Botón de Pánico para Ayuda Inmediata</h4>
+              <p class="text-secondary mb-4 leading-relaxed">
+                Dispositivo inalámbrico fácilmente accesible que permite al paciente enviar alertas de emergencia con un solo clic, especialmente valioso para pacientes con movilidad reducida o confusión.
+              </p>
+            </div>
+            <div>
+              <h4 class="font-serif text-xl font-semibold text-neutral mb-3">2.3.2 Mejora de Experiencia en Aislamiento</h4>
+              <p class="text-secondary mb-4 leading-relaxed">
+                Automatización del entorno que crea un ambiente más cómodo y acogedor, reduciendo ansiedad y mejorando la privacidad del paciente en habitaciones de aislamiento.
+              </p>
+            </div>
+          </div>
+          <div class="mermaid-container">
+            <div class="mermaid-controls">
+              <button class="mermaid-control-btn zoom-in" title="放大">
+                <i class="fas fa-search-plus"></i>
+              </button>
+              <button class="mermaid-control-btn zoom-out" title="缩小">
+                <i class="fas fa-search-minus"></i>
+              </button>
+              <button class="mermaid-control-btn reset-zoom" title="重置">
+                <i class="fas fa-expand-arrows-alt"></i>
+              </button>
+              <button class="mermaid-control-btn fullscreen" title="全屏查看">
+                <i class="fas fa-expand"></i>
+              </button>
+            </div>
+            <div class="mermaid">
+              graph TD
+              A[&#34;Sensor de Peso en Cama&#34;] --&gt; B{&#34;¿Detecta Cambio Súbito?&#34;}
+              B --&gt;|&#34;Sí&#34;| C[&#34;Alerta Instantánea vía Telegram&#34;]
+              B --&gt;|&#34;No&#34;| D[&#34;Monitoreo Continuo&#34;]
+              C --&gt; E[&#34;Personal Médico Notificado&#34;]
+              E --&gt; F[&#34;Respuesta en &lt; 2 minutos&#34;]
+              F --&gt; G[&#34;Intervención Inmediata&#34;]
+              G --&gt; H[&#34;Prevención de Lesiones Graves&#34;]
+
+              I[&#34;Sensor de Proximidad&#34;] --&gt; J[&#34;Control de Acceso&#34;]
+              I --&gt; K[&#34;Iluminación Automática&#34;]
+
+              L[&#34;Sensor Ambiental&#34;] --&gt; M[&#34;Control de Temperatura&#34;]
+              L --&gt; N[&#34;Control de Humedad&#34;]
+
+              O[&#34;Botón de Pánico&#34;] --&gt; P[&#34;Alerta de Emergencia&#34;]
+
+              style A fill:#e1f5fe,stroke:#1e40af,stroke-width:2px,color:#1e40af
+              style B fill:#fff3e0,stroke:#f59e0b,stroke-width:2px,color:#374151
+              style C fill:#ffebee,stroke:#ef4444,stroke-width:2px,color:#374151
+              style F fill:#e8f5e8,stroke:#10b981,stroke-width:2px,color:#374151
+              style H fill:#e8f5e8,stroke:#10b981,stroke-width:2px,color:#374151
+              style I fill:#f3e5f5,stroke:#8b5cf6,stroke-width:2px,color:#374151
+              style L fill:#e0f2f1,stroke:#14b8a6,stroke-width:2px,color:#374151
+              style O fill:#fce4ec,stroke:#ec4899,stroke-width:2px,color:#374151
+              style D fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#374151
+              style E fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#374151
+              style G fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#374151
+              style J fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#374151
+              style K fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#374151
+              style M fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#374151
+              style N fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#374151
+              style P fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#374151
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Benefits -->
+      <section id="key-benefits" class="mb-16">
+        <h2 class="font-serif text-4xl font-bold text-primary mb-8">3. Beneficios Clave para Hospitales e Inversores</h2>
+
+        <!-- Clinical Benefits -->
+        <div id="clinical-benefits" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">3.1 Beneficios Clínicos y Operacionales</h3>
+
+          <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-6">
+              <div class="text-center mb-4">
+                <i class="fas fa-shield-alt text-4xl text-primary mb-2"></i>
+                <h4 class="font-serif text-lg font-semibold text-primary">Reducción de Caídas</h4>
+              </div>
+              <p class="text-secondary text-sm leading-relaxed">
+                Detección inmediata y alertas instantáneas permiten intervención proactiva, reduciendo incidencia y gravedad de lesiones por caídas.
+              </p>
+            </div>
+            <div class="bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl p-6">
+              <div class="text-center mb-4">
+                <i class="fas fa-clock text-4xl text-green-600 mb-2"></i>
+                <h4 class="font-serif text-lg font-semibold text-green-600">Respuesta Rápida</h4>
+              </div>
+              <p class="text-secondary text-sm leading-relaxed">
+                Mejora de la respuesta del personal a emergencias con alertas directas y monitoreo centralizado, optimizando la gestión de recursos.
+              </p>
+            </div>
+            <div class="bg-gradient-to-br from-yellow-50 to-orange-100 rounded-xl p-6">
+              <div class="text-center mb-4">
+                <i class="fas fa-leaf text-4xl text-accent mb-2"></i>
+                <h4 class="font-serif text-lg font-semibold text-accent">Eficiencia Energética</h4>
+              </div>
+              <p class="text-secondary text-sm leading-relaxed">
+                Control automatizado del entorno optimiza el consumo de energía, reduciendo costos operativos y promoviendo la sostenibilidad.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Economic Benefits -->
+        <div id="economic-benefits" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">3.2 Beneficios Económicos y Retorno de Inversión (ROI)</h3>
+
+          <div class="bg-gradient-to-r from-green-50 to-emerald-100 rounded-2xl p-8 mb-8">
+            <h4 class="font-serif text-2xl font-bold text-green-800 mb-6">Reducción de Costos por Eventos Adversos</h4>
+            <div class="grid md:grid-cols-2 gap-8">
+              <div>
+                <div class="text-4xl font-bold text-green-700 mb-2">
+                  US$16,687 - US$110,516
+                </div>
+                <p class="text-green-600 mb-4">
+                  Costo por evento adverso (estudio 2010)
+                  <a href="https://bmjpublichealth.bmj.com/content/2/2/e001243" class="citation-link ml-2" target="_blank">[287]</a>
+                </p>
+                <div class="bg-white rounded-lg p-4">
+                  <div class="text-2xl font-bold text-green-800 mb-1">ROI Inmediato</div>
+                  <p class="text-sm text-green-700">Prevención de una sola caída grave paga la implementación</p>
+                </div>
+              </div>
+              <div>
+                <h5 class="font-semibold text-green-800 mb-3">Fuentes de ahorro:</h5>
+                <ul class="space-y-2 text-green-700">
+                  <li><i class="fas fa-check mr-2"></i>Reducción de costos de tratamiento</li>
+                  <li><i class="fas fa-check mr-2"></i>Disminución de estancias prolongadas</li>
+                  <li><i class="fas fa-check mr-2"></i>Menos litigios por mala praxis</li>
+                  <li><i class="fas fa-check mr-2"></i>Mayor eficiencia operativa</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-box">
+            <p class="font-medium">
+              <i class="fas fa-chart-line text-accent mr-2"></i>
+              El mercado colombiano de monitores de UCI proyecta ingresos de <strong>US$41.08 millones en 2025</strong>, creciendo a <strong>US$55.91 millones para 2033</strong>, con una tasa de crecimiento anual compuesta del 3.928%.
+              <a href="https://www.cognitivemarketresearch.com/icu-patient-monitor-market-report" class="citation-link ml-2" target="_blank">[247]</a>
+            </p>
+          </div>
+
+          <div class="bg-base-200 rounded-xl p-6">
+            <h4 class="font-serif text-xl font-semibold text-neutral mb-4">Aumento de la Satisfacción del Paciente</h4>
+            <p class="text-secondary leading-relaxed">
+              La mejora en seguridad y comodidad del paciente se traduce en mayores puntajes de satisfacción, impactando positivamente en la reputación del hospital y su capacidad para atraer pacientes. En muchos sistemas de salud, las calificaciones de calidad están vinculadas a incentivos financieros.
+            </p>
+          </div>
+        </div>
+
+        <!-- Usability and Scalability -->
+        <div id="usability-scalability" class="mb-12">
+          <h3 class="font-serif text-2xl font-bold text-neutral mb-6">3.3 Facilidad de Uso y Escalabilidad</h3>
+
+          <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="text-center">
+              <div class="bg-primary/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-mouse-pointer text-3xl text-primary"></i>
+              </div>
+              <h4 class="font-serif text-lg font-semibold text-neutral mb-2">Interfaz Intuitiva</h4>
+              <p class="text-secondary text-sm">
+                Diseño fácil de aprender con capacitación mínima, garantizando adopción rápida y integración fluida en el flujo de trabajo hospitalario.
+              </p>
+            </div>
+            <div class="text-center">
+              <div class="bg-accent/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-cubes text-3xl text-accent"></i>
+              </div>
+              <h4 class="font-serif text-lg font-semibold text-neutral mb-2">Implementación Modular</h4>
+              <p class="text-secondary text-sm">
+                Arquitectura flexible que permite implementación gradual, personalizable según necesidades y presupuesto específicos de cada hospital.
+              </p>
+            </div>
+            <div class="text-center">
+              <div class="bg-green-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-expand-arrows-alt text-3xl text-green-600"></i>
+              </div>
+              <h4 class="font-serif text-lg font-semibold text-neutral mb-2">Escalabilidad Total</h4>
+              <p class="text-secondary text-sm">
+                Infraestructura basada en IoT y nube que crece con el hospital, desde pequeñas clínicas hasta grandes centros de alta complejidad.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-6">
+            <h4 class="font-serif text-xl font-semibold text-neutral mb-4">Ventajas para Inversores</h4>
+            <ul class="grid md:grid-cols-2 gap-4">
+              <li class="flex items-start">
+                <i class="fas fa-chart-bar text-primary mr-3 mt-1"></i>
+                <div>
+                  <strong>Mercado en crecimiento:</strong> Fuerte demanda por tecnologías de seguridad del paciente en Colombia y América Latina
+                </div>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-globe text-primary mr-3 mt-1"></i>
+                <div>
+                  <strong>Expansión regional:</strong> Colombia representa el 13.17% del mercado suramericano de monitores de UCI
+                </div>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-cogs text-primary mr-3 mt-1"></i>
+                <div>
+                  <strong>Tecnología adaptable:</strong> Solución configurable para diferentes tipos de hospitales y necesidades específicas
+                </div>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-handshake text-primary mr-3 mt-1"></i>
+                <div>
+                  <strong>Modelo sostenible:</strong> Generación de valor tangible medible en términos de seguridad y ahorro de costos
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Conclusion -->
+      <section class="mb-16">
+        <div class="bg-gradient-to-r from-primary/10 via-accent/10 to-green-50 rounded-2xl p-8">
+          <h2 class="font-serif text-3xl font-bold text-primary mb-6 text-center">Una Inversión en Seguridad, una Solución para el Futuro</h2>
+          <div class="max-w-4xl mx-auto text-center">
+            <p class="text-lg text-secondary leading-relaxed mb-6">
+              Nuestro sistema de domótica hospitalaria representa más que una solución tecnológica: es una respuesta integral a una crisis de salud pública que afecta a millones de pacientes en Colombia y América Latina. Al abordar el 26% de caídas desde la cama con detección inmediata y respuesta en segundos, no solo prevenimos lesiones, salvamos vidas.
+            </p>
+            <div class="grid md:grid-cols-4 gap-4 mt-8">
+              <div class="stat-highlight">
+                <div class="text-xl font-bold mb-1">Inmediato</div>
+                <div class="text-xs opacity-90">Retorno de inversión</div>
+              </div>
+              <div class="stat-highlight">
+                <div class="text-xl font-bold mb-1">Escalable</div>
+                <div class="text-xs opacity-90">A cualquier tamaño</div>
+              </div>
+              <div class="stat-highlight">
+                <div class="text-xl font-bold mb-1">Intuitivo</div>
+                <div class="text-xs opacity-90">Fácil adopción</div>
+              </div>
+              <div class="stat-highlight">
+                <div class="text-xl font-bold mb-1">Esencial</div>
+                <div class="text-xs opacity-90">Para la seguridad</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+        // Initialize Mermaid with custom configuration
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#1e40af',
+                primaryTextColor: '#374151',
+                primaryBorderColor: '#1e40af',
+                lineColor: '#64748b',
+                secondaryColor: '#f1f5f9',
+                tertiaryColor: '#f8fafc',
+                background: '#ffffff',
+                mainBkg: '#ffffff',
+                secondBkg: '#f8fafc',
+                tertiaryBkg: '#f1f5f9',
+                // Enhanced contrast for different node types
+                cScale0: '#1e40af',
+                cScale1: '#f59e0b', 
+                cScale2: '#ef4444',
+                cScale3: '#10b981',
+                cScale4: '#8b5cf6',
+                cScale5: '#ec4899',
+                cScale6: '#14b8a6',
+                cScale7: '#f97316'
+            },
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 20
+            },
+            fontSize: 14,
+            fontFamily: 'Inter, sans-serif'
+        });
+
+        // Initialize Mermaid Controls for zoom and pan
+        function initializeMermaidControls() {
+            const containers = document.querySelectorAll('.mermaid-container');
+
+            containers.forEach(container => {
+            const mermaidElement = container.querySelector('.mermaid');
+            let scale = 1;
+            let isDragging = false;
+            let startX, startY, translateX = 0, translateY = 0;
+
+            // 触摸相关状态
+            let isTouch = false;
+            let touchStartTime = 0;
+            let initialDistance = 0;
+            let initialScale = 1;
+            let isPinching = false;
+
+            // Zoom controls
+            const zoomInBtn = container.querySelector('.zoom-in');
+            const zoomOutBtn = container.querySelector('.zoom-out');
+            const resetBtn = container.querySelector('.reset-zoom');
+            const fullscreenBtn = container.querySelector('.fullscreen');
+
+            function updateTransform() {
+                mermaidElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+
+                if (scale > 1) {
+                container.classList.add('zoomed');
+                } else {
+                container.classList.remove('zoomed');
+                }
+
+                mermaidElement.style.cursor = isDragging ? 'grabbing' : 'grab';
+            }
+
+            if (zoomInBtn) {
+                zoomInBtn.addEventListener('click', () => {
+                scale = Math.min(scale * 1.25, 4);
+                updateTransform();
+                });
+            }
+
+            if (zoomOutBtn) {
+                zoomOutBtn.addEventListener('click', () => {
+                scale = Math.max(scale / 1.25, 0.3);
+                if (scale <= 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+                updateTransform();
+                });
+            }
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                scale = 1;
+                translateX = 0;
+                translateY = 0;
+                updateTransform();
+                });
+            }
+
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', () => {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                } else if (container.msRequestFullscreen) {
+                    container.msRequestFullscreen();
+                }
+                });
+            }
+
+            // Mouse Events
+            mermaidElement.addEventListener('mousedown', (e) => {
+                if (isTouch) return; // 如果是触摸设备，忽略鼠标事件
+
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                mermaidElement.style.cursor = 'grabbing';
+                updateTransform();
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging && !isTouch) {
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                updateTransform();
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging && !isTouch) {
+                isDragging = false;
+                mermaidElement.style.cursor = 'grab';
+                updateTransform();
+                }
+            });
+
+            document.addEventListener('mouseleave', () => {
+                if (isDragging && !isTouch) {
+                isDragging = false;
+                mermaidElement.style.cursor = 'grab';
+                updateTransform();
+                }
+            });
+
+            // 获取两点之间的距离
+            function getTouchDistance(touch1, touch2) {
+                return Math.hypot(
+                touch2.clientX - touch1.clientX,
+                touch2.clientY - touch1.clientY
+                );
+            }
+
+            // Touch Events - 触摸事件处理
+            mermaidElement.addEventListener('touchstart', (e) => {
+                isTouch = true;
+                touchStartTime = Date.now();
+
+                if (e.touches.length === 1) {
+                // 单指拖动
+                isPinching = false;
+                isDragging = true;
+
+                const touch = e.touches[0];
+                startX = touch.clientX - translateX;
+                startY = touch.clientY - translateY;
+
+                } else if (e.touches.length === 2) {
+                // 双指缩放
+                isPinching = true;
+                isDragging = false;
+
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                initialDistance = getTouchDistance(touch1, touch2);
+                initialScale = scale;
+                }
+
+                e.preventDefault();
+            }, { passive: false });
+
+            mermaidElement.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1 && isDragging && !isPinching) {
+                // 单指拖动
+                const touch = e.touches[0];
+                translateX = touch.clientX - startX;
+                translateY = touch.clientY - startY;
+                updateTransform();
+
+                } else if (e.touches.length === 2 && isPinching) {
+                // 双指缩放
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const currentDistance = getTouchDistance(touch1, touch2);
+
+                if (initialDistance > 0) {
+                    const newScale = Math.min(Math.max(
+                    initialScale * (currentDistance / initialDistance),
+                    0.3
+                    ), 4);
+                    scale = newScale;
+                    updateTransform();
+                }
+                }
+
+                e.preventDefault();
+            }, { passive: false });
+
+            mermaidElement.addEventListener('touchend', (e) => {
+                // 重置状态
+                if (e.touches.length === 0) {
+                isDragging = false;
+                isPinching = false;
+                initialDistance = 0;
+
+                // 延迟重置isTouch，避免鼠标事件立即触发
+                setTimeout(() => {
+                    isTouch = false;
+                }, 100);
+                } else if (e.touches.length === 1 && isPinching) {
+                // 从双指变为单指，切换为拖动模式
+                isPinching = false;
+                isDragging = true;
+
+                const touch = e.touches[0];
+                startX = touch.clientX - translateX;
+                startY = touch.clientY - translateY;
+                }
+
+                updateTransform();
+            });
+
+            mermaidElement.addEventListener('touchcancel', (e) => {
+                isDragging = false;
+                isPinching = false;
+                initialDistance = 0;
+
+                setTimeout(() => {
+                isTouch = false;
+                }, 100);
+
+                updateTransform();
+            });
+
+            // Enhanced wheel zoom with better center point handling
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const rect = container.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                const newScale = Math.min(Math.max(scale * delta, 0.3), 4);
+
+                // Adjust translation to zoom towards center
+                if (newScale !== scale) {
+                const scaleDiff = newScale / scale;
+                translateX = translateX * scaleDiff;
+                translateY = translateY * scaleDiff;
+                scale = newScale;
+
+                if (scale <= 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+
+                updateTransform();
+                }
+            });
+
+            // Initialize display
+            updateTransform();
+            });
+        }
+
+        // Initialize mermaid controls when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeMermaidControls();
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active section in TOC
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id], div[id]');
+            const tocLinks = document.querySelectorAll('.toc-fixed a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('font-bold', 'text-primary');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('font-bold', 'text-primary');
+                }
+            });
+        });
+    </script>
+  
+
+</body></html>
